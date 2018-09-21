@@ -23,20 +23,20 @@ class WScript{ // https://msdn.microsoft.com/en-us/library/at5ydy31.aspx
 	void Quit(int? code); // https://msdn.microsoft.com/en-us/library/fw0fx1aw.aspx
 	void Sleep(int ms); // https://msdn.microsoft.com/en-us/library/6t81adfd.aspx
 	
-	class WshArguments { // https://msdn.microsoft.com/en-us/library/ss1ysb2a.aspx
+	class WshArguments : IEnumerable { // https://msdn.microsoft.com/en-us/library/ss1ysb2a.aspx
 		string Item(int natIndex); // https://msdn.microsoft.com/en-us/library/yzefkb42.aspx
 		WshNamed Named { get; } // https://msdn.microsoft.com/en-us/library/zw780x4f.aspx
 		WshUnnamed Unnamed { get; } // https://msdn.microsoft.com/en-us/library/b4ywdf43.aspx
 		void ShowUsage(); // https://msdn.microsoft.com/en-us/library/dc1y0x0h.aspx
 		
-		class WshNamed { // https://msdn.microsoft.com/en-us/library/d6y04sbb.aspx
+		class WshNamed : IEnumerable { // https://msdn.microsoft.com/en-us/library/d6y04sbb.aspx
 			string Item(string key); // https://msdn.microsoft.com/en-us/library/c2x76sxz.aspx
 			int length { get; } // https://msdn.microsoft.com/en-us/library/zz1z71z6.aspx
 			int Count(); // https://msdn.microsoft.com/en-us/library/6x47fysb.aspx
 			bool Exists(string key); // https://msdn.microsoft.com/en-us/library/0axxztye.aspx
 		}
 
-		class WshUnnamed {  // https://msdn.microsoft.com/en-us/library/ah2hawwc.aspx
+		class WshUnnamed : IEnumerable {  // https://msdn.microsoft.com/en-us/library/ah2hawwc.aspx
 			string Item(int index); // https://msdn.microsoft.com/en-us/library/c2x76sxz.aspx
 			int length { get; } // https://msdn.microsoft.com/en-us/library/zz1z71z6.aspx
 			int Count(); // https://msdn.microsoft.com/en-us/library/6x47fysb.aspx
