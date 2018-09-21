@@ -1,6 +1,9 @@
 # JScriptAPI
 Attemp at learning JScript and documenting their api properly.
 
+API is decsribed in pseudo C# btw
+----
+
 Why?
 Miscrosoft has made efforts to make Windows a scripting environment. But quite frankly, they all turned out to be crap.
 
