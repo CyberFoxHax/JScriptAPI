@@ -45,7 +45,19 @@ function IterateDirectories(){
 		WScript.Echo(arr[i]);
 }
 
-// create file
+function IterateDirectories2(){
+	var fso = WScript.CreateObject("Scripting.FileSystemObject");
+	var folders = fso.Folders;
+	for(var e = new Enumerator(folders); e.atEnd()===false; e.moveNext()){
+		WScript.Echo(e);
+	}
+}
+
+function CreateFile(){
+	var stream = fso.CreateTextFile("dep.txt", 2, 0);
+	stream.WriteLine("Hello World!");
+	stream.Close();
+}
 
 // copy file
 
@@ -61,4 +73,4 @@ function IterateDirectories(){
 
 // ui?
 
-//IterateDirectories();
+IterateDirectories2();

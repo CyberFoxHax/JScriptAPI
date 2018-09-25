@@ -12,6 +12,7 @@ namespace WScript{
 		
 		ExecStream Exec(string executable); // https://msdn.microsoft.com/en-us/library/ateytk4a.aspx
 		int Run(string command, WindowStyle? style, bool? waitOnReturn); // https://msdn.microsoft.com/en-us/library/d5fk67ky.aspx
+		string ExpandEnvironmentStrings(string variableString); // http://www.robvanderwoude.com/vbstech_data_environment.php
 		
 		enum WindowStyle{ // https://msdn.microsoft.com/en-us/library/d5fk67ky.aspx
 			Hidden = 0,
