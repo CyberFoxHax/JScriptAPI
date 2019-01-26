@@ -10,7 +10,7 @@ namespace WScript{
 		WshSpecialFolders SpecialFolders { get; } // https://msdn.microsoft.com/en-us/library/0ea7b5xe.aspx
 		WshSpecialFolders SpecialFolders(string name); // https://msdn.microsoft.com/en-us/library/0ea7b5xe.aspx
 		
-		ExecStream Exec(string executable); // https://msdn.microsoft.com/en-us/library/ateytk4a.aspx
+		WshScriptExec Exec(string executable); // https://msdn.microsoft.com/en-us/library/ateytk4a.aspx
 		int Run(string command, WindowStyle? style, bool? waitOnReturn); // https://msdn.microsoft.com/en-us/library/d5fk67ky.aspx
 		string ExpandEnvironmentStrings(string variableString); // http://www.robvanderwoude.com/vbstech_data_environment.php
 		
@@ -34,10 +34,19 @@ namespace WScript{
 			void Remove(string name); // https://msdn.microsoft.com/en-us/library/218yba97.aspx
 		}
 		
-		class ExecStream {
+		class WshScriptExec { // https://www.vbsedit.com/html/f3358e96-3d5a-46c2-b43b-3107e586736e.asp
 			TextStream StdIn { get; }
 			TextStream StdOut { get; }
 			TextStream StdErr { get; }
+			WshRunning Status { get; }
+			int ExitCode { get; }
+			int ProcessID { get; }
+			void Terminate();
+		}
+		
+		enum ExecStatus {
+			WshRunning=0,
+			WshFinished=1,
 		}
 	}
 }
