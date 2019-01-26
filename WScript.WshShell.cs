@@ -38,7 +38,7 @@ namespace WScript{
 			TextStream StdIn { get; }
 			TextStream StdOut { get; }
 			TextStream StdErr { get; }
-			WshRunning Status { get; }
+			ExecStatus Status { get; }
 			int ExitCode { get; }
 			int ProcessID { get; }
 			void Terminate();
