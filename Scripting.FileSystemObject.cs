@@ -63,9 +63,6 @@ namespace Scripting{
 		string GetTempName(); // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/FileSystemObjectGetTempName.htm
 		string GetBaseName(string path); // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/FileSystemObjectGetBaseName.htm
 		string BuildPath(string pathPartA, string partPartB); // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/FileSystemObjectBuildPath.htm
-		
-		// todo, doesn't compile, the doc seems to be wrong. Check it
-		FoldersCollection Folders { get; } // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/Folders.htm
 	}
 	
 	class FilesCollection : IEnumerable { // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/Files.htm
@@ -77,6 +74,7 @@ namespace Scripting{
 		void Add(string foldername); // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/FoldersAdd.htm
 		int Count(); // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/FoldersCount.htm
 		FolderObject Item(string foldername); // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/FoldersItem.htm
+		FolderObject Item(); // http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/FoldersItem.htm
 	}
 
 	class FolderObject { //http://www.java2s.com/Tutorial/JavaScript/0600__MS-JScript/Folder.htm
