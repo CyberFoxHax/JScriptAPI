@@ -1,0 +1,231 @@
+<html>
+<head>
+<HTA:APPLICATION
+    APPLICATIONNAME="JScript Console"
+    ID="RestoreHta"
+    VERSION="1.0"
+    BORDER="dialog"
+	BORDERSTYLE="complex"
+    INNERBORDER="no"
+    SCROLL="no"
+    CONTEXTMENU="no"
+	SYSMENU="yes">
+
+<style>
+* {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	background-color: #222;
+}
+
+#input{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: 10%;
+	border-top: 1px solid red;
+}
+
+#input input{
+	background-color: black;
+	color: #00ff00;
+	padding: 10px;
+	height: 100%;
+	width: 100%;
+}
+
+#send{
+	position: absolute;
+	bottom: 2px;
+	right: 0px;
+	width: 100px;
+	height: 10%;
+}
+#send input{
+	background-color: black;
+	color: #00ff00;
+	padding: 10px;
+	width: 100%;
+	height: 100%;
+	border-left: 1px solid red;
+}
+
+#history{
+	position: absolute;
+	width: 100%;
+	height: 90%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+#history xmp {
+	width: 100%;
+	background-color: transparent;
+	color: white;
+	border-bottom: 1px solid #444;
+}
+</style>
+<script>
+function myEval(p){
+	return eval(p);
+}
+(function(){
+window.resizeTo(600,400);
+var inputElm;
+var historyElm;
+
+var history = [];
+var historyCurrentPos = 0;
+
+var strSize = 0;
+var strLimit = 4294967295;
+var currentDepth = 0;
+var depthLimit = 2;
+function ReflectObject(object, indent){
+	currentDepth++;
+	if(currentDepth > depthLimit){
+		currentDepth--;
+		return "##";
+	}
+	if(strSize > strLimit)
+		return "##error, too long##";
+	if(indent == undefined)
+		indent = 0;
+	var text = "";
+	if(object+"" == "[object]")
+		text += "{\r\n";
+	else
+		text += object+"{\r\n";
+	for(var prop in object){
+		for(var i=0; i<(indent+1)*4;i++)
+			text += " ";
+		if(object[prop] == null)
+			text += prop + ": null,\r\n";
+		else if(object[prop] == undefined)
+			text += prop + ": undefined,\r\n";
+		else if(typeof object[prop] == "object"){
+			if(strSize > strLimit)
+				return text;
+			text += prop + ": " + ReflectObject(object[prop], indent + 1) + ",\r\n";
+		}
+		else if(typeof object[prop] == "string")
+			text += prop + ": \"" + object[prop] + "\",\r\n";
+		else	
+			text += prop + ": " + object[prop] + ",\r\n";
+	}
+	for(var i=0; i<(indent)*4;i++)
+		text += " ";
+	text += "}";
+	strSize += text.length;
+	currentDepth--;
+	return text;
+}
+
+function NavUp(){
+	historyCurrentPos++;
+	if(historyCurrentPos > history.length)
+		historyCurrentPos = history.length;
+	var value = history[history.length-historyCurrentPos];
+	if(value !== undefined)
+		inputElm.value = value;
+}
+
+function NavDown(){
+	historyCurrentPos--;
+	if(historyCurrentPos < 0)
+		historyCurrentPos = 0;
+	var value = history[history.length-historyCurrentPos];
+	if(value !== undefined)
+		inputElm.value = value;
+	else
+		inputElm.value = "";
+}
+
+function PushLog(){
+	history.push(inputElm.value);
+	historyCurrentPos = 0;
+	if(inputElm.value == "cls" || inputElm.value == "clear"){
+		historyElm.innerHTML = "";
+		inputElm.value = "";
+		return;
+	}
+	else if(inputElm.value == "exit" || inputElm.value == "quit"){
+		inputElm.value = "skank";
+		window.close();
+		return;
+	}
+		
+	var entry = document.createElement("xmp");
+	var result;
+	try{
+		result = myEval(inputElm.value)
+	}
+	catch(error){
+		result = error;
+		entry.style.color = "red";
+	}
+	
+	var text = "";
+	if(typeof result == "object"){
+		strSize = 0;
+		currentDepth = 0;
+		text += ReflectObject(result);
+	}
+	else if(typeof result == "function"){
+		text += result;
+	}
+	else if(typeof result == "string"){
+		text += "\""+result+"\"";
+	}
+	//else if(typeof result == "boolean")
+	//else if(typeof result == "number")
+	else
+		text += result;
+		
+	entry.innerText = text;
+	historyElm.appendChild(entry);
+	inputElm.value = "";
+	historyElm.scrollTop=  historyElm.scrollHeight;
+}
+
+window.onload = function(){
+	inputElm = document.getElementById("input").firstChild;
+	historyElm = document.getElementById("history");
+	var sendElm = document.getElementById("send").firstChild;
+	
+	sendElm.onclick = function(event){
+		PushLog();
+	}
+	
+	inputElm.onkeydown = function(event){
+		var code = window.event.keyCode;
+		switch(code){
+			case 13: PushLog(); break;
+			case 38: NavUp(); break;
+			case 40: NavDown(); break;
+		}
+	}
+	inputElm.focus();
+};
+})();
+</script>
+</head>
+<body>
+	
+	<div id="history">
+		
+	</div>
+	<div id="input">
+		<input type="text" />
+	</div>
+	<div id="send">
+		<input type="button" value="Run" />
+	</div>
+
+</body>
+</html>

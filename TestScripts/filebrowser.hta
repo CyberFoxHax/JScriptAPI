@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>File Browser</title>
+<HTA:APPLICATION
+    APPLICATIONNAME="File Browser"
+    ID="RestoreHta"
+    VERSION="1.0"
+    BORDER="dialog"
+    INNERBORDER="no"
+    SCROLL="yes"
+    CONTEXTMENU="no"
+	SYSMENU="yes">
+<style>
+	input {
+		display: block;
+		text-align: left;
+		background: #ccebff;
+		border: none;
+		padding: 5px;
+		padding-left: 10px;
+		margin: 3px;
+		border-radius: 10px;
+		width: 400px;
+		font-weight: bold;
+	}
+</style>
+<script language="jscript">
+
+var shell = new ActiveXObject("WScript.Shell");
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+
+function Click(){
+	LoadFolder(this.folderPath);
+}
+function GoBack(){
+	history.pop();
+	LoadFolder(history.pop());
+}
+
+function CreateButton(text, click, path){
+	var button = document.createElement("input");
+	button.type = "button";
+	button.folderPath = path;
+	button.value = text;
+	button.onclick = click;
+	return button;
+}
+
+var history = [];
+function LoadFolder(folder){
+	history.push(folder);
+	document.body.innerHTML = folder;
+	document.body.appendChild(CreateButton("< <", GoBack));
+	var folderObj = fso.GetFolder(folder);
+	var folders = folderObj.SubFolders;
+	var enumerator = new Enumerator(folders);
+	while(enumerator.atEnd() == false){
+		var current = enumerator.item();
+		document.body.appendChild(CreateButton("\\"+current.Name, Click, current.Path));
+		enumerator.moveNext();
+	}
+	
+	var files = folderObj.Files;
+	var enumerator = new Enumerator(files);
+	while(enumerator.atEnd() == false){
+		var current = enumerator.item();
+		document.body.appendChild(CreateButton(current.Name, null));
+		enumerator.moveNext();
+	}
+}
+
+window.onload = function(){
+	LoadFolder("c:\\");
+}
+
+</script>
+</head>
+<body></body>
+</html>

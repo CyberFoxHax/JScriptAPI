@@ -14,7 +14,7 @@ var startDir = shell.CurrentDirectory;
 		return;
 	}
 	
-	shell.Run('Git-2.19.0-64-bit.exe /VERYSILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh"', 1, true);
+	shell.Run('Git-2.19.0-64-bit.exe /SILENT /NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh"', 1, true);
 	
 	var backupFolder;
 	if(fso.FolderExists(backupAssets))
