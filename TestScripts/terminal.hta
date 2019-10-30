@@ -72,8 +72,18 @@ body{
 </style>
 <script>
 function myEval(p){
+	if(p.substring(0,4) == "var ")
+		return eval(p.replace("var ", ""));
 	return eval(p);
 }
+var WScript = {
+	CreateObject: function (p) {
+		return new ActiveXObject(p);
+	},
+	Echo: function (p) {
+		return alert(p);
+	}
+};
 (function(){
 window.resizeTo(600,400);
 var inputElm;
@@ -96,12 +106,23 @@ function ReflectObject(object, indent){
 		return "##error, too long##";
 	if(indent == undefined)
 		indent = 0;
+	
+	
+	var isFunction = false;
 	var text = "";
-	if(object+"" == "[object]")
+	if(object != null && object+"" == undefined)
+		text += "[native object]{\r\n";
+	else if(object+"" == "[object]")
 		text += "{\r\n";
-	else
+	else if((object+"").substring(0, "\nfunction ".length) == "\nfunction "){
+		text += object;
+		isFunction = true;
+	}
+	else{
 		text += object+"{\r\n";
+	}
 	for(var prop in object){
+		
 		for(var i=0; i<(indent+1)*4;i++)
 			text += " ";
 		if(object[prop] == null)
@@ -120,7 +141,8 @@ function ReflectObject(object, indent){
 	}
 	for(var i=0; i<(indent)*4;i++)
 		text += " ";
-	text += "}";
+	if(isFunction == false)
+		text += "}";
 	strSize += text.length;
 	currentDepth--;
 	return text;
