@@ -7,7 +7,7 @@ if(isAsync == true){
 	req.onreadystatechange = function(p){
 		WScript.Echo(req.readyState);
 		if(req.readyState == 4)
-			WScript.Echo(req.responseText);
+			WScript.Echo(req.responseText); // didn't look into parsing json yet
 	};
 	req.send();
 }
